@@ -1,4 +1,7 @@
-class Person
+require './nameable'
+
+class Person < Nameable
+  # include Nameable
   attr_accessor :name, :age
   attr_reader :id
 
@@ -22,4 +25,9 @@ class Person
   def generate_id
     rand(1000..9999)
   end
+
+  def correct_name
+    @name
+  end
+
 end
