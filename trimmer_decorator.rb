@@ -6,5 +6,3 @@ class TrimmerDecorator < Decorator
     trimmed_name.length < @nameable.correct_name.length ? "#{trimmed_name}..." : trimmed_name
   end
 end
-
-ghhdddff
