@@ -30,13 +30,13 @@ class App
   def create_person(app)
     puts 'Enter the person name:'
     name = gets.chomp
-  
+
     puts 'Enter the person age:'
     age = gets.chomp.to_i
-  
+
     puts 'Enter the person type (student/teacher):'
     type = gets.chomp.downcase
-  
+
     if type == 'student'
       puts 'Enter the classroom:'
       classroom = gets.chomp
@@ -49,8 +49,6 @@ class App
       puts 'Invalid person type.'
     end
   end
-  
-  
 
   def create_book(title, author)
     book = Book.new(title, author)
