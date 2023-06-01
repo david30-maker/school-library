@@ -44,28 +44,6 @@ def process_option(option, app)
   end
 end
 
-# def process_option(option, app)
-#   case option
-#   when 1
-#     list_books(app)
-#   when 2
-#     list_people(app)
-#   when 3
-#     create_person(app)
-#   when 4
-#     create_book(app)
-#   when 5
-#     create_rental(app)
-#   when 6
-#     list_rentals_for_person(app)
-#   when 7
-#     puts 'Quitting the app...'
-#     exit
-#   else
-#     puts 'Invalid option. Please try again.'
-#   end
-# end
-
 def create_person(app)
   print "Enter the person's name: "
   name = gets.chomp
