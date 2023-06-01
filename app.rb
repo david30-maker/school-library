@@ -5,100 +5,108 @@ require_relative 'book'
 require_relative 'rental'
 
 class App
+  attr_accessor :people, :books, :rentals
+
   def initialize
     @people = []
     @books = []
     @rentals = []
   end
 
-  def list_books
-    puts 'List of books:'
+  def list_all_books
+    puts 'List of all books:'
     @books.each do |book|
       puts "#{book.title} by #{book.author}"
     end
   end
 
-  def list_people
-    puts 'List of people:'
+  def list_all_people
+    puts 'List of all people:'
     @people.each do |person|
       puts "#{person.name} (#{person.class})"
     end
   end
 
-  def create_person(name, age, parent_permission, specialization = nil)
-    person = if specialization.nil?
-               Student.new(name, age, parent_permission)
-             else
-               Teacher.new(name, age, parent_permission, specialization)
-             end
-    @people << person
-    person
+  def create_person(app)
+    puts 'Enter the person name:'
+    name = gets.chomp
+  
+    puts 'Enter the person age:'
+    age = gets.chomp.to_i
+  
+    puts 'Enter the person type (student/teacher):'
+    type = gets.chomp.downcase
+  
+    if type == 'student'
+      puts 'Enter the classroom:'
+      classroom = gets.chomp
+      app.add_student(Student.new(name, age, classroom))
+    elsif type == 'teacher'
+      puts 'Enter the specialization:'
+      specialization = gets.chomp
+      app.add_teacher(Teacher.new(name, age, specialization))
+    else
+      puts 'Invalid person type.'
+    end
   end
+  
+  
 
   def create_book(title, author)
     book = Book.new(title, author)
     @books << book
-    book
+    puts "Created book: #{book.title} by #{book.author}"
+  end
+
+  def create_rental(book_id, person_id, date)
+    selected_book = @books.find { |book| book.id == book_id }
+    @people.find { |person| person.id == person_id }
+
+    if selected_book && person
+      rental = Rental.new(selected_book, person, date)
+      @rentals << rental
+      puts "Created rental: #{rental.book.title} rented by #{rental.person.name}"
+    else
+      puts 'Book or person not found.'
+    end
   end
 
   def list_rentals_for_person(person_id)
-    person_rentals = @rentals.select { |rental| rental.person.id == person_id }
+    selected_person = @people.find { |p| p.id == person_id }
 
-    if person_rentals.empty?
-      puts "No rentals found for the person with ID #{person_id}."
-    else
-      person = @people.find { |p| p.id == person_id }
-      puts "Rentals for #{person.name}:"
-      person_rentals.each do |rental|
-        book = @books.find { |b| b.id == rental.book_id }
-        puts "#{book.title} (Rental Date: #{rental.date})"
+    if selected_person
+      rentals = @rentals.select { |rental| rental.person == selected_person }
+      if rentals.empty?
+        puts "No rentals found for person with ID #{person_id}."
+      else
+        puts "Rentals for person with ID #{person_id}:"
+        rentals.each do |rental|
+          puts "Book: #{rental.book.title}, Rental Date: #{rental.date}"
+        end
       end
-    end
-  end
-
-  rental = Rental.new(book, person, date)
-  person.add_rental(rental)
-  book.add_rental(rental)
-  @rentals << rental
-
-  rental
-end
-
-def list_rentals(person_id)
-  person = @people.find { |p| p.id == person_id }
-
-  if person
-    rentals = @rentals.select { |rental| rental.person == person }
-
-    if rentals.empty?
-      puts "No rentals found for person with ID #{person_id}."
     else
-      puts "Rentals for person with ID #{person_id}:"
-      rentals.each do |rental|
-        puts "Book ID: #{rental.book.id}, Title: #{rental.book.title}, Date: #{rental.date}"
-      end
+      puts 'Person not found.'
     end
-  else
-    puts "Person with ID #{person_id} not found."
   end
 end
 
-app = App.new
+# # Usage example:
+# app = App.new
 
-book1 = app.create_book('Book 1', 'Author 1')
-book2 = app.create_book('Book 2', 'Author 2')
-book3 = app.create_book('Book 3', 'Author 3')
+# # List all books
+# app.list_all_books
 
-app.list_books
+# # List all people
+# app.list_all_people
 
-teacher = app.create_person('John Doe', 35, true, 'Mathematics')
+# # Create a person
+# app.create_person('John Doe', 'student')
 
-student = app.create_person('Jane Smith', 17, true)
+# # Create a book
+# app.create_book('Book Title', 'Author')
 
-app.list_people
+# # Create a rental
+# app.create_rental(book_id, person_id, '2023-05-29')
 
-app.create_rental(teacher.id, book1.id, '2023-05-30')
-app.create_rental(student.id, book2.id, '2023-06-01')
-app.create_rental(student.id, book3.id, '2023-06-03')
-
-app.list_rentals(student.id)
+# # List rentals for a person
+# app.list_rentals_for_person(person_id)

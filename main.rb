@@ -110,5 +110,3 @@ def list_rentals_for_person(app)
     end
   end
 end
-
-main
