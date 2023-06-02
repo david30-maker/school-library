@@ -48,8 +48,8 @@ The School-library is an application that allows usres to keep details orcrecord
 - Person
 - Student
 - Teacher
-- Books
-- Rentals
+- Book
+- Rental
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -75,6 +75,12 @@ To run the project execute the command below
 - Twitter: [@davidigbo1](https://twitter.com/davidigbo1)
 - LinkedIn: [davidigbo/](https://www.linkedin.com/in/davidigbo/)
 
+<!-- FUTURE FEATURES -->
+
+## 🔭 Future Features <a name="future-features"></a>
+**[Add_class_make_chang]**
+**[Add_decorate_class]**
+**[Add_association_setup]**
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -94,7 +100,7 @@ If you like this project don't doubt on make any comments or try to reach me out
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
+<!-- ACKNOWLEDGEMENTS -->
 
 ## 🙏 Acknowledgments <a name="acknowledgements"></a>
 

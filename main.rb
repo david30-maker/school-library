@@ -2,22 +2,29 @@ require_relative 'app'
 
 def main
   app = App.new
-
   loop do
-    puts 'Welcome to the Console App!'
-    puts 'Please choose an option:'
-    puts '1. List all books'
-    puts '2. List all people'
-    puts '3. Create a person'
-    puts '4. Create a book'
-    puts '5. Create a rental'
-    puts '6. List rentals for a person'
-    puts '7. Quit the app'
-
-    option = get_user_option
+    display_menu_options
+    option = user_option
+    break if option == 7
 
     process_option(option, app)
+    puts "\n"
+    puts '============================'
+    puts "\n"
   end
+  puts 'Quitting the app...'
+end
+
+def display_menu_options
+  puts 'Welcome to the Console App!'
+  puts 'Please choose an option:'
+  puts '1. List all books'
+  puts '2. List all people'
+  puts '3. Create a person'
+  puts '4. Create a book'
+  puts '5. Create a rental'
+  puts '6. List rentals for a person'
+  puts '7. Quit the app'
 end
 
 def user_option
@@ -26,87 +33,83 @@ def user_option
 end
 
 def process_option(option, app)
-  option_handlers = {
-    1 => :handle_list_books,
-    2 => :handle_list_people,
-    3 => :handle_create_person,
-    4 => :handle_create_book,
-    5 => :handle_create_rental,
-    6 => :handle_list_rentals_for_person,
-    7 => :handle_quit_app
-  }
-
-  handler = option_handlers[option]
-  if handler
-    send(handler, app)
+  case option
+  when 1
+    handle_list_books(app)
+  when 2
+    handle_list_people(app)
+  when 3
+    handle_create_person(app)
+  when 4
+    handle_create_book(app)
+  when 5
+    handle_create_rental(app)
+  when 6
+    handle_list_rentals_for_person(app)
   else
     puts 'Invalid option. Please try again.'
   end
 end
 
-def create_person(app)
-  print "Enter the person's name: "
-  name = gets.chomp
-
-  print "Enter the person's age: "
-  age = gets.chomp.to_i
-
-  print 'Is the person a teacher? (Y/N): '
-  is_teacher = gets.chomp.downcase == 'y'
-
-  if is_teacher
-    print "Enter the teacher's specialization: "
-    specialization = gets.chomp
-    app.create_teacher(name, age, specialization)
-    puts 'Teacher created successfully.'
-  else
-    print 'Does the person have parent permission? (Y/N): '
-    has_permission = gets.chomp.downcase == 'y'
-    app.create_student(name, age, has_permission)
-    puts 'Student created successfully.'
-  end
+def handle_list_books(app)
+  app.list_all_books
 end
 
-def create_book(app)
-  print "Enter the book's title: "
+def handle_list_people(app)
+  app.list_all_people
+end
+
+def handle_create_person(app)
+  puts 'Enter the person ID:'
+  id = gets.chomp.to_i
+
+  puts 'Enter the person name:'
+  name = gets.chomp
+
+  puts 'Enter the person age:'
+  age = gets.chomp.to_i
+
+  puts 'Enter the person type (student/teacher):'
+  type = gets.chomp.downcase
+
+  app.create_person(id, name, age, type)
+  puts 'Person created successfully.'
+end
+
+def handle_create_book(app)
+  puts 'Enter the book ID'
+  id = gets.chomp.to_i
+  puts 'Enter the book title:'
   title = gets.chomp
 
-  print "Enter the author's name: "
+  puts 'Enter the book author:'
   author = gets.chomp
 
-  app.create_book(title, author)
+  app.create_book(id, title, author)
   puts 'Book created successfully.'
 end
 
-def create_rental(app)
-  print "Enter the person's ID: "
+def handle_create_rental(app)
+  puts 'Enter the rental ID:'
+  id = gets.chomp.to_i
+
+  puts 'Enter the person ID:'
   person_id = gets.chomp.to_i
 
-  print "Enter the book's ID: "
+  puts 'Enter the book ID:'
   book_id = gets.chomp.to_i
 
-  print 'Enter the rental date (YYYY-MM-DD): '
+  puts 'Enter the rental date (YYYY-MM-DD):'
   rental_date = gets.chomp
 
-  app.create_rental(person_id, book_id, rental_date)
-  puts 'Rental created successfully.'
+  app.create_rental(id, book_id, person_id, rental_date)
 end
 
-def list_rentals_for_person(app)
-  print "Enter the person's ID: "
+def handle_list_rentals_for_person(app)
+  puts 'Enter the person ID:'
   person_id = gets.chomp.to_i
 
-  rentals = app.rentals_for_person(person_id)
-
-  if rentals.empty?
-    puts "No rentals found for the person with ID #{person_id}."
-  else
-    puts "Rentals for the person with ID #{person_id}:"
-    rentals.each do |rental|
-      puts "Rental ID: #{rental.id}"
-      puts "Book: #{rental.book.title} by #{rental.book.author}"
-      puts "Rental Date: #{rental.date}"
-      puts '------'
-    end
-  end
+  app.list_rentals_for_person(person_id)
 end
+
+main
