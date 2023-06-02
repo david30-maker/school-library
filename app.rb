@@ -93,31 +93,3 @@ class App
     end
   end
 end
-
-# app = App.new
-
-# # List all books
-# app.list_all_books
-
-# # List all people
-# app.list_all_people
-
-# # Create a person
-# app.create_person('John Doe', 'student')
-
-# # Create a book
-# app.create_book('Book Title', 'Author')
-
-# # Create a rental
-# app.create_rental(book_id, person_id, '2023-05-29')
-
-# # List rentals for a person
-# app.list_rentals_for_person(person_id)
-
-# app = App.new
-# app.create_person(1, 'John Doe', 12, 'student')
-# app.create_book(1, 'Book Title', 'Author')
-# app.create_rental(1, 1, 1, '2023-05-29')
-
-# app.books.each { |b| puts "Book #{b.id}"}
-# app.people.each { |p| puts "People #{p.id}"}
