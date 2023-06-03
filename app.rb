@@ -15,19 +15,20 @@ class App
 
   def list_all_books
     puts 'List of all books:'
-    @books.each do |book|
-      puts "Id: #{book.id}, Title: #{book.title}, Author: #{book.author}"
+    @books.each_with_index do |book, index|
+      puts "#{index}) - Id: #{book.id}, Title: #{book.title}, Author: #{book.author}"
     end
   end
 
   def list_all_people
     puts 'List of all people:'
     @people.each_with_index do |person, index|
-      puts "Id: #{index + 1}, Name: #{person.name}, Type: #{person.class.name}"
+      puts "#{index}) - Id: #{person.id}, Name: #{person.name}, Type: #{person.class.name}"
     end
   end
 
-  def create_person(id, name, age, type)
+  def create_person(name, age, type)
+    id = @people.size + 1
     if type == 'student'
       puts 'Enter the classroom:'
       classroom = gets.chomp
@@ -47,20 +48,16 @@ class App
     @people << person
   end
 
-  def create_book(id, title, author)
+  def create_book(title, author)
+    id = @books.size + 1
     book = Book.new(id, title, author)
     @books << book
   end
 
-  def create_rental(id, book_id, person_id, date)
-    puts '********************************'
-    puts book_id
-    puts person_id
-    @books.each { |b| puts b.id, b.title }
-    @people.each { |p| puts p.id, p.name }
-
-    book = @books.find { |b| b.id == book_id }
-    person = @people.find { |p| p.id == person_id }
+  def create_rental(book_index, person_index, date)
+    id = @rentals.size + 1
+    book = @books[book_index]
+    person = @people[person_index]
 
     if book && person
       rental = Rental.new(id, book, person, date)

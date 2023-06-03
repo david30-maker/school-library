@@ -4,7 +4,7 @@ class Person < Nameable
   attr_reader :id, :name
   attr_accessor :rentals
 
-  def initialize(id, name)
+  def initialize(id, name, _age)
     super()
     @id = id
     @name = name

@@ -9,7 +9,7 @@ def main
 
     process_option(option, app)
     puts "\n"
-    puts '============================'
+    puts '****************************************************************************'
     puts "\n"
   end
   puts 'Quitting the app...'
@@ -60,53 +60,48 @@ def handle_list_people(app)
 end
 
 def handle_create_person(app)
-  puts 'Enter the person ID:'
-  id = gets.chomp.to_i
-
   puts 'Enter the person name:'
   name = gets.chomp
 
-  puts 'Enter the person age:'
+  puts "\nEnter the person age:"
   age = gets.chomp.to_i
 
-  puts 'Enter the person type (student/teacher):'
+  puts "\nEnter the person type (student/teacher):"
   type = gets.chomp.downcase
 
-  app.create_person(id, name, age, type)
+  app.create_person(name, age, type)
   puts 'Person created successfully.'
 end
 
 def handle_create_book(app)
-  puts 'Enter the book ID'
-  id = gets.chomp.to_i
   puts 'Enter the book title:'
   title = gets.chomp
 
   puts 'Enter the book author:'
   author = gets.chomp
 
-  app.create_book(id, title, author)
+  app.create_book(title, author)
   puts 'Book created successfully.'
 end
 
 def handle_create_rental(app)
-  puts 'Enter the rental ID:'
-  id = gets.chomp.to_i
+  puts "Select a book from the following list by number: \n"
+  app.list_all_books
+  book_index = gets.chomp.to_i
 
-  puts 'Enter the person ID:'
-  person_id = gets.chomp.to_i
-
-  puts 'Enter the book ID:'
-  book_id = gets.chomp.to_i
+  puts "Select a person from the following list by number (not ID): \n"
+  app.list_all_people
+  person_index = gets.chomp.to_i
 
   puts 'Enter the rental date (YYYY-MM-DD):'
   rental_date = gets.chomp
 
-  app.create_rental(id, book_id, person_id, rental_date)
+  app.create_rental(book_index, person_index, rental_date)
 end
 
 def handle_list_rentals_for_person(app)
-  puts 'Enter the person ID:'
+  puts "Enter the person ID (see ID in the list below): \n"
+  app.list_all_people
   person_id = gets.chomp.to_i
 
   app.list_rentals_for_person(person_id)
