@@ -33,7 +33,7 @@ The School-library is an application that allows usres to keep details orcrecord
 
 ## 🚀 Live Demo <a name="live-demo"></a>
 
-- [Tobe updated]
+- [To be updated]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -48,6 +48,8 @@ The School-library is an application that allows usres to keep details orcrecord
 - Person
 - Student
 - Teacher
+- Book
+- Rental
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
