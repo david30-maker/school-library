@@ -8,7 +8,7 @@ def main
   book_handler = BookHandler.new
   person_handler = PersonHandler.new
   rental_handler = RentalHandler.new
-  
+
   loop do
     display_menu_options
     option = user_option
