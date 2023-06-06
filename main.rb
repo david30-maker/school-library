@@ -1,13 +1,20 @@
 require_relative 'app'
+require_relative 'book_handler'
+require_relative 'person_handler'
+require_relative 'rental_handler'
 
 def main
   app = App.new
+  book_handler = BookHandler.new
+  person_handler = PersonHandler.new
+  rental_handler = RentalHandler.new
+
   loop do
     display_menu_options
     option = user_option
     break if option == 7
 
-    process_option(option, app)
+    process_option(option, app, book_handler, person_handler, rental_handler)
     puts "\n"
     puts '****************************************************************************'
     puts "\n"
@@ -32,79 +39,21 @@ def user_option
   gets.chomp.to_i
 end
 
-def process_option(option, app)
+def process_option(option, app, book_handler, person_handler, rental_handler)
   case option
   when 1
-    handle_list_books(app)
+    book_handler.handle_list_books(app)
   when 2
-    handle_list_people(app)
+    person_handler.handle_list_people(app)
   when 3
-    handle_create_person(app)
+    person_handler.handle_create_person(app)
   when 4
-    handle_create_book(app)
+    book_handler.handle_create_book(app)
   when 5
-    handle_create_rental(app)
+    rental_handler.handle_create_rental(app)
   when 6
-    handle_list_rentals_for_person(app)
+    person_handler.handle_list_rentals_for_person(app)
   else
     puts 'Invalid option. Please try again.'
   end
 end
-
-def handle_list_books(app)
-  app.list_all_books
-end
-
-def handle_list_people(app)
-  app.list_all_people
-end
-
-def handle_create_person(app)
-  puts 'Enter the person name:'
-  name = gets.chomp
-
-  puts "\nEnter the person age:"
-  age = gets.chomp.to_i
-
-  puts "\nEnter the person type (student/teacher):"
-  type = gets.chomp.downcase
-
-  app.create_person(name, age, type)
-  puts 'Person created successfully.'
-end
-
-def handle_create_book(app)
-  puts 'Enter the book title:'
-  title = gets.chomp
-
-  puts 'Enter the book author:'
-  author = gets.chomp
-
-  app.create_book(title, author)
-  puts 'Book created successfully.'
-end
-
-def handle_create_rental(app)
-  puts "Select a book from the following list by number: \n"
-  app.list_all_books
-  book_index = gets.chomp.to_i
-
-  puts "Select a person from the following list by number (not ID): \n"
-  app.list_all_people
-  person_index = gets.chomp.to_i
-
-  puts 'Enter the rental date (YYYY-MM-DD):'
-  rental_date = gets.chomp
-
-  app.create_rental(book_index, person_index, rental_date)
-end
-
-def handle_list_rentals_for_person(app)
-  puts "Enter the person ID (see ID in the list below): \n"
-  app.list_all_people
-  person_id = gets.chomp.to_i
-
-  app.list_rentals_for_person(person_id)
-end
-
-main
