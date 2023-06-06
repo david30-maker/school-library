@@ -1,6 +1,3 @@
-require_relative 'rental'
-
-
 class RentalHandler
 
     def handle_create_rental(app)

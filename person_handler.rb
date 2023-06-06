@@ -1,5 +1,3 @@
-require_relative 'person'
-
 class PersonHandler
     def handle_list_people(app)
         app.list_all_people
