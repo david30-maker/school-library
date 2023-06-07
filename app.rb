@@ -93,52 +93,54 @@ class App
   end
 
   # preserve data
-  # def save_books
-  #   CSV.open('data/books.csv', 'wb') do |csv|
-  #     @books.each do |book|
-  #       csv << [book.id, book.title, book.author] # array of arrays
-  #     end
-  #   end
-  # end
 
-  # def save_people
-  #   CSV.open('data/people.csv', 'wb') do |csv|
-  #     @people.each do |person|
-  #       csv << [person.id, person.name, person.age, person.class.name, if person.instance_of?(Student)
-  #                                                                        person.classroom
-  #                                                                      else
-  #                                                                        person.specialization
-  #                                                                      end]
-  #       array of arrays
-  #     end
-  #   end
-  # end
+  require 'json'
 
-  # def save_rentals
-  #   CSV.open('data/rentals.csv', 'wb') do |csv|
-  #     @rentals.each do |rental|
-  #       csv << [rental.id, rental.book.id, rental.person.id, rental.date]
-  #       array of arrays
-  #     end
-  #   end
-  # end
+  def save_books
+    save_to_csv('data/books.csv', @books, %w[id title author])
+  end
 
-  # let's preserve our data in json format here!
+  def save_people
+    save_to_csv('data/people.csv', @people, %w[id name age type classroom specialization])
+  end
+
+  def save_rentals
+    save_to_csv('data/rentals.csv', @rentals, %w[id book_id person_id date])
+  end
 
   def save_data
-    save_to_json('book.json', @book)
-    save_to_json('person.json', @person)
-    save_to_json('rental.json', @rental)
+    save_to_json('book.json', @books)
+    save_to_json('person.json', @people)
+    save_to_json('rental.json', @rentals)
+  end
+
+  def save_to_csv(filename, data, headers)
+    CSV.open(filename, 'wb') do |csv|
+      csv << headers
+      data.each do |item|
+        csv << item.to_csv_row
+      end
+    end
+  end
+
+  def save_to_json(filename, data)
+    File.write("data/#{filename}", JSON.generate(data))
+  end
+
+  class Object
+    def to_csv_row
+      if instance_of?(Student)
+        [id, name, age, self.class.name, classroom, nil]
+      else
+        [id, name, age, self.class.name, nil, specialization]
+      end
+    end
   end
 
   def load_data
     @books = load_from_json('book.json')
     @people = load_from_json('person.json')
     @rentals = load_from_json('rental.json')
-  end
-
-  def save_to_json(file_name, data)
-    File.write(file_name, JSON.generate(data))
   end
 
   def load_from_json(file_name)
