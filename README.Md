@@ -75,6 +75,12 @@ To run the project execute the command below
 - Twitter: [@davidigbo1](https://twitter.com/davidigbo1)
 - LinkedIn: [davidigbo/](https://www.linkedin.com/in/davidigbo/)
 
+👤 **Taiwo Enoch**
+
+- [Github](https://github.com/TaiwoEnoch)
+- [Linkedin](https://www.linkedin.com/in/taiwo01/)
+- [Twitter](https://twitter.com/taiwoenoch4)
+
 <!-- FUTURE FEATURES -->
 
 ## 🔭 Future Features <a name="future-features"></a>
