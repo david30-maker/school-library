@@ -2,6 +2,7 @@ require_relative 'app'
 require_relative 'book_handler'
 require_relative 'person_handler'
 require_relative 'rental_handler'
+require_relative 'save_app_data'
 
 def main
   app = App.new
@@ -19,6 +20,10 @@ def main
     puts '****************************************************************************'
     puts "\n"
   end
+
+  s = SaveAppData.new
+  s.save_data(app)
+  puts 'App Data Saved...'
   puts 'Quitting the app...'
 end
 

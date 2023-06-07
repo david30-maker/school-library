@@ -8,6 +8,8 @@ require 'json'
 class App
   attr_reader :books, :people, :rentals
 
+  DATA_DIR = 'data'.freeze
+
   def initialize
     @books = []
     @people = []
@@ -54,6 +56,7 @@ class App
     id = @books.size + 1
     book = Book.new(id, title, author)
     @books << book
+    # save_to_json('book.json', @books)
   end
 
   def create_rental(book_index, person_index, date)
@@ -92,58 +95,57 @@ class App
     end
   end
 
-  # preserve data
-  # def save_books
-  #   CSV.open('data/books.csv', 'wb') do |csv|
-  #     @books.each do |book|
-  #       csv << [book.id, book.title, book.author] # array of arrays
-  #     end
-  #   end
-  # end
-
-  # def save_people
-  #   CSV.open('data/people.csv', 'wb') do |csv|
-  #     @people.each do |person|
-  #       csv << [person.id, person.name, person.age, person.class.name, if person.instance_of?(Student)
-  #                                                                        person.classroom
-  #                                                                      else
-  #                                                                        person.specialization
-  #                                                                      end]
-  #       array of arrays
-  #     end
-  #   end
-  # end
-
-  # def save_rentals
-  #   CSV.open('data/rentals.csv', 'wb') do |csv|
-  #     @rentals.each do |rental|
-  #       csv << [rental.id, rental.book.id, rental.person.id, rental.date]
-  #       array of arrays
-  #     end
-  #   end
-  # end
-
-  # let's preserve our data in json format here!
-
-  def save_data
-    save_to_json('book.json', @book)
-    save_to_json('person.json', @person)
-    save_to_json('rental.json', @rental)
-  end
+  private
 
   def load_data
-    @books = load_from_json('book.json')
-    @people = load_from_json('person.json')
-    @rentals = load_from_json('rental.json')
+    @books = load_books_from_json('books.json')
+    @people = load_people_from_json('people.json')
+    @rentals = load_rentals_from_json('rentals.json')
   end
 
-  def save_to_json(file_name, data)
-    File.write(file_name, JSON.generate(data))
+  # def add_person(person)
+  #   @people << person
+  # end
+
+  def load_books_from_json(file_name)
+    file_content = File.read(file_name)
+    object_properties = JSON.parse(file_content)
+    stored_objects = object_properties.map do |props|
+      Book.new(props['id'], props['title'], props['author'])
+    end
+    @books = stored_objects
+  rescue JSON::ParserError => e
+    puts "Error parsing #{file_name}: #{e.message}"
+    []
   end
 
-  def load_from_json(file_name)
-    return [] unless File.exist?(file_name)
+  def load_people_from_json(file_name)
+    file_content = File.read(file_name)
+    object_properties = JSON.parse(file_content)
+    stored_objects = object_properties.map do |props|
+      if props['classroom']
+        Student.new(props['id'], props['name'], props['age'], props['classroom'])
+      else
+        Teacher.new(props['id'], props['name'], props['age'], props['specialization'])
+      end
+    end
+    @people = stored_objects
+  rescue JSON::ParserError => e
+    puts "Error parsing #{file_name}: #{e.message}"
+    []
+  end
 
-    JSON.parse(File.read(file_name))
+  def load_rentals_from_json(file_name)
+    file_content = File.read(file_name)
+    object_properties = JSON.parse(file_content)
+    stored_objects = object_properties.map do |props|
+      rental_book = @books.find { |book| book.id == props['book_id'] }
+      rental_person = @people.find { |person| person.id == props['person_id'] }
+      Rental.new(props['id'], rental_book, rental_person, props['date'])
+    end
+    @rentals = stored_objects
+  rescue JSON::ParserError => e
+    puts "Error parsing #{file_name}: #{e.message}"
+    []
   end
 end
