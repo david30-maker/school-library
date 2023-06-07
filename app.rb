@@ -3,6 +3,7 @@ require_relative 'person'
 require_relative 'student'
 require_relative 'teacher'
 require_relative 'rental'
+require 'json'
 
 class App
   attr_reader :books, :people, :rentals
@@ -11,6 +12,7 @@ class App
     @books = []
     @people = []
     @rentals = []
+    load_data
   end
 
   def list_all_books
@@ -89,4 +91,58 @@ class App
       puts 'Invalid person ID.'
     end
   end
+
+  # preserve data
+  # def save_books
+  #   CSV.open('data/books.csv', 'wb') do |csv|
+  #     @books.each do |book|
+  #       csv << [book.id, book.title, book.author] # array of arrays
+  #     end
+  #   end
+  # end
+
+  # def save_people
+  #   CSV.open('data/people.csv', 'wb') do |csv|
+  #     @people.each do |person|
+  #       csv << [person.id, person.name, person.age, person.class.name, person.class == Student ?
+  # person.classroom : person.specialization]
+  # array of arrays
+  #     end
+  #   end
+  # end
+
+  # def save_rentals
+  #   CSV.open('data/rentals.csv', 'wb') do |csv|
+  #     @rentals.each do |rental|
+  #       csv << [rental.id, rental.book.id, rental.person.id, rental.date]
+  # array of arrays
+  #     end
+  #   end
+  # end
+
+  # let's preserve our data in json format here!
+
+  def save_data
+    save_to_json('books.json', @books)
+    save_to_json('people.json', @people)
+    save_to_json('rentals.json', @rentals)
+  end
+
+  def load_data
+    @books = load_from_json('books.json')
+    @people = load_from_json('people.json')
+    @rentals = load_from_json('rentals.json')
+  end
+
+  # uncomment line 137 to 147 out
+
+  # def save_to_json(file_name, data)
+  #   File.write(file_name, JSON.generate(data))
+  # end
+
+  # def load_from_json(file_name)
+  #   return [] unless File.exist?(file_name)
+
+  #   JSON.parse(File.read(file_name))
+  # end
 end
