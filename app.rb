@@ -92,36 +92,36 @@ class App
     end
   end
 
-  preserve data
-  def save_books
-    CSV.open('data/books.csv', 'wb') do |csv|
-      @books.each do |book|
-        csv << [book.id, book.title, book.author] # array of arrays
-      end
-    end
-  end
+  # preserve data
+  # def save_books
+  #   CSV.open('data/books.csv', 'wb') do |csv|
+  #     @books.each do |book|
+  #       csv << [book.id, book.title, book.author] # array of arrays
+  #     end
+  #   end
+  # end
 
-  def save_people
-    CSV.open('data/people.csv', 'wb') do |csv|
-      @people.each do |person|
-        csv << [person.id, person.name, person.age, person.class.name, if person.instance_of?(Student)
-                                                                         person.classroom
-                                                                       else
-                                                                         person.specialization
-                                                                       end]
-        array of arrays
-      end
-    end
-  end
+  # def save_people
+  #   CSV.open('data/people.csv', 'wb') do |csv|
+  #     @people.each do |person|
+  #       csv << [person.id, person.name, person.age, person.class.name, if person.instance_of?(Student)
+  #                                                                        person.classroom
+  #                                                                      else
+  #                                                                        person.specialization
+  #                                                                      end]
+  #       array of arrays
+  #     end
+  #   end
+  # end
 
-  def save_rentals
-    CSV.open('data/rentals.csv', 'wb') do |csv|
-      @rentals.each do |rental|
-        csv << [rental.id, rental.book.id, rental.person.id, rental.date]
-        array of arrays
-      end
-    end
-  end
+  # def save_rentals
+  #   CSV.open('data/rentals.csv', 'wb') do |csv|
+  #     @rentals.each do |rental|
+  #       csv << [rental.id, rental.book.id, rental.person.id, rental.date]
+  #       array of arrays
+  #     end
+  #   end
+  # end
 
   # let's preserve our data in json format here!
 
