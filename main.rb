@@ -57,3 +57,5 @@ def process_option(option, app, book_handler, person_handler, rental_handler)
     puts 'Invalid option. Please try again.'
   end
 end
+
+main
