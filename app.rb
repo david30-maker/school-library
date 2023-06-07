@@ -56,7 +56,6 @@ class App
     id = @books.size + 1
     book = Book.new(id, title, author)
     @books << book
-    # save_to_json('book.json', @books)
   end
 
   def create_rental(book_index, person_index, date)
@@ -102,10 +101,6 @@ class App
     @people = load_people_from_json('people.json')
     @rentals = load_rentals_from_json('rentals.json')
   end
-
-  # def add_person(person)
-  #   @people << person
-  # end
 
   def load_books_from_json(file_name)
     file_content = File.read(file_name)
