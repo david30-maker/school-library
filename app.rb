@@ -3,14 +3,18 @@ require_relative 'person'
 require_relative 'student'
 require_relative 'teacher'
 require_relative 'rental'
+require 'json'
 
 class App
   attr_reader :books, :people, :rentals
+
+  DATA_DIR = 'data'.freeze
 
   def initialize
     @books = []
     @people = []
     @rentals = []
+    load_data
   end
 
   def list_all_books
@@ -88,5 +92,67 @@ class App
     else
       puts 'Invalid person ID.'
     end
+  end
+
+  private
+
+  def load_data
+    @books = load_books_from_json('books.json')
+    @people = load_people_from_json('people.json')
+    @rentals = load_rentals_from_json('rentals.json')
+  end
+
+  def load_books_from_json(file_name)
+    if File.exist?(file_name)
+      file_content = File.read(file_name)
+      object_properties = JSON.parse(file_content)
+      stored_objects = object_properties.map do |props|
+        Book.new(props['id'], props['title'], props['author'])
+      end
+      @books = stored_objects
+    else
+      @books = []
+    end
+  rescue JSON::ParserError => e
+    puts "Error parsing #{file_name}: #{e.message}"
+    []
+  end
+
+  def load_people_from_json(file_name)
+    if File.exist?(file_name)
+      file_content = File.read(file_name)
+      object_properties = JSON.parse(file_content)
+      stored_objects = object_properties.map do |props|
+        if props['classroom']
+          Student.new(props['id'], props['name'], props['age'], props['classroom'])
+        else
+          Teacher.new(props['id'], props['name'], props['age'], props['specialization'])
+        end
+      end
+      @people = stored_objects
+    else
+      @people = []
+    end
+  rescue JSON::ParserError => e
+    puts "Error parsing #{file_name}: #{e.message}"
+    []
+  end
+
+  def load_rentals_from_json(file_name)
+    if File.exist?(file_name)
+      file_content = File.read(file_name)
+      object_properties = JSON.parse(file_content)
+      stored_objects = object_properties.map do |props|
+        rental_book = @books.find { |book| book.id == props['book_id'] }
+        rental_person = @people.find { |person| person.id == props['person_id'] }
+        Rental.new(props['id'], rental_book, rental_person, props['date'])
+      end
+      @rentals = stored_objects
+    else
+      @rentals = []
+    end
+  rescue JSON::ParserError => e
+    puts "Error parsing #{file_name}: #{e.message}"
+    []
   end
 end
