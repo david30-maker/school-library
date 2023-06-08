@@ -15,7 +15,6 @@ class SaveAppData
         title: book.title,
         author: book.author }
     end
-    # File.open('books.json', 'w') do |file|
     File.write(file_name, JSON.pretty_generate(object))
   end
 
@@ -38,7 +37,6 @@ class SaveAppData
         }
       end
     end
-    # File.open('persons.json', 'w') do |file|
     File.write(file_name, JSON.pretty_generate(object))
   end
 
@@ -51,7 +49,6 @@ class SaveAppData
         date: rental.date
       }
     end
-    # File.open('rentals.json', 'w') do |file|
     File.write(file_name, JSON.pretty_generate(object))
   end
 end
